@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
 
+//    private CopyOnWriteArrayList<Transaction> transactions = new CopyOnWriteArrayList<>();
+//
+//    private ConcurrentHashMap<String, CopyOnWriteArrayList<StockOffer>> stockMarket = new ConcurrentHashMap<>();
     public static void main(String[] args) {
-        System.out.println("THREAD SIMULATOR\nWrite the number of threads you want to create (default = 1):");
+        System.out.println("STOCK EXCHANGE SIMULATOR\nWrite the number of clients you want to create (default = 1):");
         Scanner scanner = new Scanner(System.in);
         int threads = 1;
         try {
@@ -24,7 +29,7 @@ public class Main {
         }
 
         ExecutorService executor = Executors.newFixedThreadPool(threads);
-
+        executor.execute(new Exchange(threads));
         executor.shutdown();
     }
 

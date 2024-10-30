@@ -43,7 +43,29 @@ public class StockOffer {
         return pricePerUnit;
     }
 
+    public int getShares() {
+        return shares;
+    }
+
+    @Override
+    public String toString() {
+        return "Offer: " + id +
+                ": " + shares +
+                " shares of " + type +
+                " for " + pricePerUnit + " per unit.";
+    }
+
     public boolean match(StockOffer request){
         return this.type.equals(request.getType()) && this.pricePerUnit == request.getPrice();
+    }
+
+    public void exchangeShares(StockOffer request){
+        int exchangedShares = Math.min(this.shares, request.getShares());
+        this.shares -= exchangedShares;
+        request.shares -= exchangedShares;
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }
