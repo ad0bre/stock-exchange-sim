@@ -29,7 +29,7 @@ public class Client implements Runnable{
                         new StockOffer(
                                 type,
                                 random.nextDouble(10),
-                                random.nextInt(50),
+                                random.nextInt(50) + 1,
                                 random.nextBoolean()));
             }
         }

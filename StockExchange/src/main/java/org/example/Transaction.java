@@ -15,11 +15,12 @@ public class Transaction {
         this.buyer = buyer;
         this.seller = seller;
         this.offer = offer;
+        System.out.println(this);
     }
 
     @Override
     public String toString(){
-        return "New transaction: " + this.id +
+        return "New transaction " + this.id +
                 ": buyer " + this.buyer.getId() +
                 " bought "+ this.exchangedShares +
                 " shares of " + this.offer.getType() +

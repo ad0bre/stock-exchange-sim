@@ -56,7 +56,7 @@ public class StockOffer {
     }
 
     public boolean match(StockOffer request){
-        return this.type.equals(request.getType()) && this.pricePerUnit == request.getPrice();
+        return this.type.equals(request.getType()) && Math.abs(this.pricePerUnit - request.getPrice()) < 0.1;
     }
 
     public void exchangeShares(StockOffer request){
