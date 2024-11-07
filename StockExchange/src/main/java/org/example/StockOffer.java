@@ -22,6 +22,10 @@ public class StockOffer {
         this.isOffer = isOffer;
     }
 
+    public boolean isOffer() {
+        return isOffer;
+    }
+
     public String getType() {
         return type;
     }

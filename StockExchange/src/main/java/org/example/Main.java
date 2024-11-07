@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -22,14 +19,22 @@ public class Main {
             int input = Integer.parseInt(scanner.nextLine());
             threads = input > 0 ? input : threads;
             System.out.println("Creating " + threads + " threads...");
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Invalid number");
             System.exit(1);
         }
 
+        List<Client> clients = new ArrayList<>();
+        Exchange exchange = new Exchange(clients);
+
         ExecutorService executor = Executors.newFixedThreadPool(threads);
-        executor.execute(new Exchange(threads));
+
+        for (int i = 0; i < threads; i++) {
+            Client client = new Client(exchange);
+            clients.add(client);
+            executor.submit(client);
+        }
+
         executor.shutdown();
     }
 
