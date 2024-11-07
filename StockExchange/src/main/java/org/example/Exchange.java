@@ -73,32 +73,14 @@ public class Exchange {
                                 Optional<Client> buyer = findClientByOffer(request);
                                 Optional<Client> seller = findClientByOffer(offer);
 
-                                if (buyer.isPresent() && seller.isPresent()) {
+                                if (buyer.isPresent() && seller.isPresent() && !buyer.get().getId().equals(seller.get().getId())) {
                                     transactions.add(new Transaction(buyer.get(), seller.get(), offer, sharesExchanged));
                                     System.out.println("Transaction executed: " + buyer.get().getId() + " bought " +
                                             sharesExchanged + " shares of " + offer.getType() +
                                             " from " + seller.get().getId());
 
-                                    if (offer.getShares() == 0) {
-                                        matchedOffers.add(offer);
-                                        Lock sellerLock = seller.get().getLock();
-                                        sellerLock.lock();
-                                        try {
-                                            seller.get().getWallet().remove(offer);
-                                        } finally {
-                                            sellerLock.unlock();
-                                        }
-                                    }
-                                    if (request.getShares() == 0) {
-                                        matchedRequests.add(request);
-                                        Lock buyerLock = buyer.get().getLock();
-                                        buyerLock.lock();
-                                        try {
-                                            buyer.get().getWallet().remove(request);
-                                        } finally {
-                                            buyerLock.unlock();
-                                        }
-                                    }
+                                    matchOffers(matchedOffers, offer, seller);
+                                    matchOffers(matchedRequests, request, buyer);
                                 }
                             }
                         }
@@ -110,6 +92,19 @@ public class Exchange {
             offers.removeAll(matchedRequests);
         } finally {
             lock.unlock();
+        }
+    }
+
+    private void matchOffers(List<StockOffer> matchedRequests, StockOffer request, Optional<Client> buyer) {
+        if (request.getShares() == 0) {
+            matchedRequests.add(request);
+            Lock buyerLock = buyer.get().getLock();
+            buyerLock.lock();
+            try {
+                buyer.get().getWallet().remove(request);
+            } finally {
+                buyerLock.unlock();
+            }
         }
     }
 }
