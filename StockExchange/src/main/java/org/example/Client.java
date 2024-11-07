@@ -26,7 +26,7 @@ public class Client implements Runnable {
         return id;
     }
 
-    public synchronized ArrayList<StockOffer> getWallet() {
+    public ArrayList<StockOffer> getWallet() {
         return wallet;
     }
 
@@ -37,21 +37,21 @@ public class Client implements Runnable {
                 this.wallet.add(
                         new StockOffer(
                                 type,
-                                random.nextInt(10),
+                                generateRandomPrice(),
                                 random.nextInt(10) + 1,
                                 random.nextBoolean()));
             }
         }
     }
 
-    public synchronized StockOffer createOffer(String type) {
+    public StockOffer createOffer(String type) {
         StockOffer offer = new StockOffer(
                 type,
-                random.nextInt(10),
+                generateRandomPrice(),
                 random.nextInt(10) + 1,
                 true
         );
-        wallet.add(offer);  // Add the offer to the wallet
+        wallet.add(offer);
         System.out.println("Seller " + this.id +
                 " wants to sell " + offer.getShares() +
                 " shares of " + offer.getType() +
@@ -59,19 +59,24 @@ public class Client implements Runnable {
         return offer;
     }
 
-    public synchronized StockOffer createRequest(String type) {
+    public StockOffer createRequest(String type) {
         StockOffer request = new StockOffer(
                 type,
-                random.nextInt(10),
+                generateRandomPrice(),
                 random.nextInt(10) + 1,
                 false
         );
-        wallet.add(request);  // Add the request to the wallet
+        wallet.add(request);
         System.out.println("Buyer " + this.id +
                 " wants to buy " + request.getShares() +
                 " shares of " + request.getType() +
                 " for " + request.getPrice() + " per unit.");
         return request;
+    }
+
+    private double generateRandomPrice() {
+        double price = 1.0 + (9.0 * random.nextDouble());
+        return Math.round(price * 100.0) / 100.0;
     }
 
     @Override

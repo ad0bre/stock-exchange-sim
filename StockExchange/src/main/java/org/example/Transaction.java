@@ -25,6 +25,6 @@ public class Transaction {
                 " bought "+ this.exchangedShares +
                 " shares of " + this.offer.getType() +
                 " from seller " + this.seller.getId() +
-                " for " + this.offer.getPrice() + "per unit.";
+                " for " + this.offer.getPrice() + " per unit.";
     }
 }
