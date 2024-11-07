@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Client implements Runnable {
 
-    private final UUID id;
+    private final String id;
     private final ArrayList<StockOffer> wallet;
     private final Random random = new Random();
     private final Exchange exchange;
@@ -21,12 +21,12 @@ public class Client implements Runnable {
 
     public Client(Exchange exchange) {
         this.exchange = exchange;
-        this.id = UUID.randomUUID();
+        this.id = IdGenerator.generate();
         this.wallet = new ArrayList<>();
         generateWallet(types);
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
