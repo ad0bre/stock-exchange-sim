@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class StockOffer {
-    private UUID id;
+    private String id;
     private String type;
     private int shares;
     private double pricePerUnit;
@@ -15,11 +15,15 @@ public class StockOffer {
     private final Lock lock = new ReentrantLock();
 
     public StockOffer(String type, double price, int shares, boolean isOffer) {
-        this.id = UUID.randomUUID();
+        this.id = IdGenerator.generate();
         this.type = type;
         this.pricePerUnit = price;
         this.shares = shares;
         this.isOffer = isOffer;
+    }
+
+    public boolean isOffer() {
+        return isOffer;
     }
 
     public String getType() {
@@ -56,7 +60,9 @@ public class StockOffer {
     }
 
     public boolean match(StockOffer request){
-        return this.type.equals(request.getType()) && this.pricePerUnit == request.getPrice();
+        return this.type.equals(request.getType()) &&
+                Math.abs(this.pricePerUnit - request.getPrice()) < 0.7 &&
+                this.isOffer != request.isOffer();
     }
 
     public void exchangeShares(StockOffer request){

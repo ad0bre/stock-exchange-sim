@@ -3,7 +3,7 @@ package org.example;
 import java.util.UUID;
 
 public class Transaction {
-    private UUID id;
+    private String id;
     private Client buyer;
     private Client seller;
     private StockOffer offer;
@@ -11,7 +11,7 @@ public class Transaction {
 
     public Transaction(Client buyer, Client seller, StockOffer offer, int exchangedShares) {
         this.exchangedShares = exchangedShares;
-        this.id = UUID.randomUUID();
+        this.id = IdGenerator.generate();
         this.buyer = buyer;
         this.seller = seller;
         this.offer = offer;
@@ -19,11 +19,11 @@ public class Transaction {
 
     @Override
     public String toString(){
-        return "New transaction: " + this.id +
+        return "New transaction " + this.id +
                 ": buyer " + this.buyer.getId() +
                 " bought "+ this.exchangedShares +
                 " shares of " + this.offer.getType() +
                 " from seller " + this.seller.getId() +
-                " for " + this.offer.getPrice() + "per unit.";
+                " for " + this.offer.getPrice() + " per unit.";
     }
 }
