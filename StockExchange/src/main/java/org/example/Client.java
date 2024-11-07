@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Client implements Runnable {
 
@@ -14,6 +16,8 @@ public class Client implements Runnable {
     private final Exchange exchange;
     private final CopyOnWriteArrayList<String> types = new CopyOnWriteArrayList<>(
             Arrays.asList("Microsoft", "Apple", "Google", "Amazon", "Facebook"));
+
+    private final Lock lock = new ReentrantLock();
 
     public Client(Exchange exchange) {
         this.exchange = exchange;
@@ -94,5 +98,9 @@ public class Client implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }

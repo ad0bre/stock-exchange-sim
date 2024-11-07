@@ -15,7 +15,6 @@ public class Transaction {
         this.buyer = buyer;
         this.seller = seller;
         this.offer = offer;
-        System.out.println(this);
     }
 
     @Override
