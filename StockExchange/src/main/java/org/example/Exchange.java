@@ -3,18 +3,20 @@ package org.example;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Exchange {
     private final CopyOnWriteArrayList<Transaction> transactions = new CopyOnWriteArrayList<>();
     private final ConcurrentHashMap<String, List<StockOffer>> stockMarket = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Object> stockMonitors = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Lock> stockLocks = new ConcurrentHashMap<>();
     private final List<Client> clients;
 
     public Exchange(List<Client> clients) {
         this.clients = clients;
         List<String> stockTypes = Arrays.asList("Microsoft", "Apple", "Google", "Amazon", "Facebook");
         for (String type : stockTypes) {
-            stockMonitors.put(type, new Object());
+            stockLocks.put(type, new ReentrantLock());
             stockMarket.put(type, new CopyOnWriteArrayList<>());
         }
     }
@@ -22,33 +24,40 @@ public class Exchange {
     public void addStockOffer(StockOffer offer) {
         if (offer.getShares() > 0) {
             String type = offer.getType();
-            Object monitor = stockMonitors.get(type);
+            Lock lock = stockLocks.get(type);
 
-            synchronized (monitor) {
+            lock.lock();
+            try {
                 stockMarket.get(type).add(offer);
                 matchOffersAndRequests(type);
-                monitor.notifyAll();
+            } finally {
+                lock.unlock();
             }
         } else {
-            System.out.println("ignoring offer with 0 shares");
+            System.out.println("Ignoring offer with 0 shares");
         }
     }
 
     public Optional<Client> findClientByOffer(StockOffer offer) {
         for (Client client : clients) {
-            synchronized (client) {
+            Lock clientLock = client.getLock();
+            clientLock.lock();
+            try {
                 if (client.getWallet().contains(offer)) {
                     return Optional.of(client);
                 }
+            } finally {
+                clientLock.unlock();
             }
         }
         return Optional.empty();
     }
 
     private void matchOffersAndRequests(String type) {
-        Object monitor = stockMonitors.get(type);
+        Lock lock = stockLocks.get(type);
 
-        synchronized (monitor) {
+        lock.lock();
+        try {
             List<StockOffer> offers = stockMarket.get(type);
             List<StockOffer> matchedOffers = new ArrayList<>();
             List<StockOffer> matchedRequests = new ArrayList<>();
@@ -73,14 +82,22 @@ public class Exchange {
 
                                     if (offer.getShares() == 0) {
                                         matchedOffers.add(offer);
-                                        synchronized (seller.get()) {
+                                        Lock sellerLock = seller.get().getLock();
+                                        sellerLock.lock();
+                                        try {
                                             seller.get().getWallet().remove(offer);
+                                        } finally {
+                                            sellerLock.unlock();
                                         }
                                     }
                                     if (request.getShares() == 0) {
                                         matchedRequests.add(request);
-                                        synchronized (buyer.get()) {
+                                        Lock buyerLock = buyer.get().getLock();
+                                        buyerLock.lock();
+                                        try {
                                             buyer.get().getWallet().remove(request);
+                                        } finally {
+                                            buyerLock.unlock();
                                         }
                                     }
                                 }
@@ -92,8 +109,8 @@ public class Exchange {
 
             offers.removeAll(matchedOffers);
             offers.removeAll(matchedRequests);
-
-            monitor.notifyAll();
+        } finally {
+            lock.unlock();
         }
     }
 }
