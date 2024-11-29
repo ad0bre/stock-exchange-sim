@@ -1,0 +1,4 @@
+GET /api/stock-offers -> gets all stock offers that are available 
+POST /api/stock-offers -> creates a stock offer
+POST /api/stock-offers/process -> processes the stock offers that are available 
+GET /api/stock-offers/transcations -> gets all transactions
