@@ -7,6 +7,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Exchange {
+    public static final List<String> STOCK_TYPES = Arrays.asList("Microsoft", "Apple", "Google", "Amazon", "Facebook");
     private final CopyOnWriteArrayList<Transaction> transactions = new CopyOnWriteArrayList<>();
     private final ConcurrentHashMap<String, List<StockOffer>> stockMarket = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Lock> stockLocks = new ConcurrentHashMap<>();
@@ -14,11 +15,19 @@ public class Exchange {
 
     public Exchange(List<Client> clients) {
         this.clients = clients;
-        List<String> stockTypes = Arrays.asList("Microsoft", "Apple", "Google", "Amazon", "Facebook");
+        List<String> stockTypes = STOCK_TYPES;
         for (String type : stockTypes) {
             stockLocks.put(type, new ReentrantLock());
             stockMarket.put(type, new CopyOnWriteArrayList<>());
         }
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public List<String> getStockTypes() {
+        return STOCK_TYPES;
     }
 
     public void addStockOffer(StockOffer offer) {
@@ -52,7 +61,7 @@ public class Exchange {
         return Optional.empty();
     }
 
-    private void matchOffersAndRequests(String type) {
+    public void matchOffersAndRequests(String type) {
         Lock lock = stockLocks.get(type);
 
         lock.lock();

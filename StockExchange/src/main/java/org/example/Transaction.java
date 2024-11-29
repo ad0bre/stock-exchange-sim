@@ -9,6 +9,22 @@ public class Transaction {
     private StockOffer offer;
     private int exchangedShares;
 
+    public Client getBuyer() {
+        return buyer;
+    }
+
+    public Client getSeller() {
+        return seller;
+    }
+
+    public StockOffer getOffer() {
+        return offer;
+    }
+
+    public int getExchangedShares() {
+        return exchangedShares;
+    }
+
     public Transaction(Client buyer, Client seller, StockOffer offer, int exchangedShares) {
         this.exchangedShares = exchangedShares;
         this.id = IdGenerator.generate();
