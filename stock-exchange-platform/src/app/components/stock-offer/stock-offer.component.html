@@ -1,3 +1,6 @@
+To add a `mat-form-field` for the "Is Offer" field, you can use a `mat-checkbox` to represent the boolean value. Here is how you can update your form in the `src/app/components/stock-offer/stock-offer.component.html` file:
+
+```html
 <div class="container">
   <div class="stock-offers">
     <mat-card class="stock-offer-card">
@@ -31,6 +34,8 @@
           <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required />
         </mat-form-field>
 
+        <mat-checkbox [(ngModel)]="newOffer.offer" name="offer">Is Offer</mat-checkbox>
+
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit">Create Offer</button>
         </div>
@@ -42,3 +47,6 @@
 <div class="process-offers-button-container">
   <button mat-stroked-button color="accent" type="button" (click)="processOffers()">Process Offers</button>
 </div>
+```
+
+This will add a checkbox to your form to indicate whether the new offer is active or not.
