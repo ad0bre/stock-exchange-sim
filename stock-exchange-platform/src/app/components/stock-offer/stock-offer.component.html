@@ -18,18 +18,21 @@
       <form (ngSubmit)="createOffer()" class="offer-form">
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Type</mat-label>
-          <input matInput [(ngModel)]="newOffer.type" name="type" required />
+          <input matInput [(ngModel)]="newOffer.type" name="type" required/>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Shares</mat-label>
-          <input matInput [(ngModel)]="newOffer.shares" type="number" name="shares" required />
+          <input matInput [(ngModel)]="newOffer.shares" type="number" name="shares" required/>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Price Per Unit</mat-label>
-          <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required />
+          <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required/>
         </mat-form-field>
+
+        <mat-label>Is Offer</mat-label>
+        <mat-checkbox [(ngModel)]="newOffer.offer" name="offer">Is Offer</mat-checkbox>
 
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit">Create Offer</button>
@@ -42,3 +45,4 @@
 <div class="process-offers-button-container">
   <button mat-stroked-button color="accent" type="button" (click)="processOffers()">Process Offers</button>
 </div>
+

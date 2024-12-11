@@ -8,6 +8,7 @@ import { MatCard } from '@angular/material/card';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-stock-offer',
@@ -21,7 +22,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCard,
     MatInput,
     MatLabel,
-    MatButton
+    MatButton,
+    MatCheckbox
   ],
   styleUrls: ['./stock-offer.component.css']
 })
@@ -48,6 +50,7 @@ export class StockOfferComponent {
   createOffer() {
     this.stockOfferService.createStockOffer(this.newOffer).subscribe({
       next: () => {
+        console.log(this.newOffer)
         this.fetchStockOffers();
         this.snackBar.open('Offer created successfully', 'Close', { duration: 3000 });
       },
