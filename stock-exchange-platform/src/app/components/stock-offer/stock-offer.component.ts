@@ -31,7 +31,7 @@ export class StockOfferComponent {
     { id: 2, type: 'Sell', shares: 200, pricePerUnit: 75, offer: true },
     { id: 3, type: 'Buy', shares: 150, pricePerUnit: 60, offer: true }
   ];
-  newOffer = { id: 0, type: '', shares: 0, pricePerUnit: 0, offer: true };
+  newOffer = { type: '', shares: 0, pricePerUnit: 0, offer: true };
 
   constructor(private stockOfferService: StockOfferService, private snackBar: MatSnackBar) {}
 
