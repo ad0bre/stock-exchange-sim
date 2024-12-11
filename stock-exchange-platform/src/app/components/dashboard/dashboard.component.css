@@ -1,0 +1,24 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.dashboard-links {
+  width: 100%;
+  max-width: 600px;
+}
+
+.link-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

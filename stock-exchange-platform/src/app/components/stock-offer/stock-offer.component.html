@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="stock-offers">
+    <mat-card class="stock-offer-card">
+      <h2>Stock Offers</h2>
+      <mat-list class="offers-list">
+        <mat-list-item *ngFor="let offer of stockOffers">
+          <div>
+            <h4>{{ offer.type }} - {{ offer.shares }} shares &#64; {{ offer.pricePerUnit }}</h4>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </div>
+
+  <div class="create-offer">
+    <mat-card class="stock-offer-card">
+      <h3>Create a New Offer</h3>
+      <form (ngSubmit)="createOffer()" class="offer-form">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Type</mat-label>
+          <input matInput [(ngModel)]="newOffer.type" name="type" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Shares</mat-label>
+          <input matInput [(ngModel)]="newOffer.shares" type="number" name="shares" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Price Per Unit</mat-label>
+          <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required />
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit">Create Offer</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>
+
+<div class="process-offers-button-container">
+  <button mat-stroked-button color="accent" type="button" (click)="processOffers()">Process Offers</button>
+</div>

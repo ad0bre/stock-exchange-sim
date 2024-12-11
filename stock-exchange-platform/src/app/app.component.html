@@ -1,0 +1,19 @@
+<div class="app-container">
+  <mat-toolbar color="primary" class="mat-toolbar">
+    <span>Stock Exchange Platform</span>
+    <span class="spacer"></span>
+    <mat-nav-list style="display: flex; flex-direction: row;">
+      <a mat-button routerLink="/" routerLinkActive="active-link">Dashboard</a>
+      <a mat-button routerLink="/stock-offers" routerLinkActive="active-link">Stock Offers</a>
+      <a mat-button routerLink="/transactions" routerLinkActive="active-link">Transactions</a>
+    </mat-nav-list>
+  </mat-toolbar>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Stock Exchange Platform. All rights reserved.</p>
+  </footer>
+</div>

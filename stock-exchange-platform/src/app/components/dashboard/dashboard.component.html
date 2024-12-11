@@ -1,0 +1,29 @@
+<div class="dashboard">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-card-title>Welcome to the Stock Exchange Platform</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Manage your stock offers and view transactions from the dashboard.</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="dashboard-links">
+    <mat-grid-list cols="2" rowHeight="1:1">
+      <mat-grid-tile>
+        <mat-card class="link-card">
+          <mat-card-content>
+            <a mat-button color="primary" routerLink="/stock-offers" routerLinkActive="active-link">Go to Stock Offers</a>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card class="link-card">
+          <mat-card-content>
+            <a mat-button color="primary" routerLink="/transactions" routerLinkActive="active-link">View Transactions</a>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
