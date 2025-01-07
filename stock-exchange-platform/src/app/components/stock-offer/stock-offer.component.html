@@ -34,7 +34,7 @@ To add a `mat-form-field` for the "Is Offer" field, you can use a `mat-checkbox`
           <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required />
         </mat-form-field>
 
-        <mat-checkbox [(ngModel)]="newOffer.offer" name="offer">Is Offer</mat-checkbox>
+        <mat-checkbox [(ngModel)]="newOffer.isOffer" name="isOffer">Is Offer</mat-checkbox>
 
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit">Create Offer</button>

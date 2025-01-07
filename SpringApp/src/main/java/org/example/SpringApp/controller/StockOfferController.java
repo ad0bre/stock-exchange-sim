@@ -39,8 +39,8 @@ public class StockOfferController {
     }
 
     @PostMapping("/process")
-    @Operation(summary = "Process stock offers", description = "Process stock offers and match them with requests")
-    public ResponseEntity<Void> processOffersAndRequests() {
+    @Operation(summary = "Manually process stock offers", description = "Manually process stock offers and match them with requests")
+    public ResponseEntity<Void> processOffersManually() {
         stockOfferService.processOffersAndRequests();
         return ResponseEntity.ok().build();
     }

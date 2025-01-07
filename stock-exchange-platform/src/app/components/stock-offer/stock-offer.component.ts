@@ -29,11 +29,11 @@ import {MatCheckbox} from '@angular/material/checkbox';
 })
 export class StockOfferComponent {
   stockOffers: any[] = [
-    { id: 1, type: 'Buy', shares: 100, pricePerUnit: 50, offer: true },
-    { id: 2, type: 'Sell', shares: 200, pricePerUnit: 75, offer: true },
-    { id: 3, type: 'Buy', shares: 150, pricePerUnit: 60, offer: true }
+    { id: 1, type: 'Buy', shares: 100, pricePerUnit: 50, isOffer: true },
+    { id: 2, type: 'Sell', shares: 200, pricePerUnit: 75, isOffer: true },
+    { id: 3, type: 'Buy', shares: 150, pricePerUnit: 60, isOffer: true }
   ];
-  newOffer = { type: '', shares: 0, pricePerUnit: 0, offer: true };
+  newOffer = { type: '', shares: 0, pricePerUnit: 0, isOffer: true };
 
   constructor(private stockOfferService: StockOfferService, private snackBar: MatSnackBar) {}
 
@@ -54,6 +54,7 @@ export class StockOfferComponent {
         this.snackBar.open('Offer created successfully', 'Close', { duration: 3000 });
       },
       error: (error) => {
+        console.log(this.newOffer, typeof this.newOffer.isOffer);
         alert('Failed to create offer: ' + error.message);
       }
     });

@@ -17,7 +17,7 @@ public class Client {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<StockOffer> wallet = new ArrayList<>();
 
     public Client() {
