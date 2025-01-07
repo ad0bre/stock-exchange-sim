@@ -110,13 +110,18 @@ public class StockOfferService {
 
     public void processOffersAndRequests() {
         lock.lock();
+        initStockOffers();
         try {
             List<StockOffer> matchedOffers = new ArrayList<>();
             List<StockOffer> matchedRequests = new ArrayList<>();
 
-            for (StockOffer offer : stockOffers) {
+            List<StockOffer> activeOffers = stockOffers.stream()
+                    .filter(offer -> !offer.isFulfilled())
+                    .toList();
+
+            for (StockOffer offer : activeOffers) {
                 if (offer.isOffer() && offer.getShares() > 0) {
-                    for (StockOffer request : stockOffers) {
+                    for (StockOffer request : activeOffers) {
                         if (!request.isOffer() && request.getShares() > 0 && offer != request && match(offer, request)) {
                             int sharesBeforeExchange = offer.getShares() + request.getShares();
                             exchangeShares(offer, request);
@@ -142,8 +147,7 @@ public class StockOfferService {
                 }
             }
 
-            stockOffers.removeAll(matchedOffers);
-            stockOffers.removeAll(matchedRequests);
+            stockOffers.removeIf(offer -> offer.isFulfilled());
         } finally {
             lock.unlock();
         }
@@ -158,6 +162,15 @@ public class StockOfferService {
         int exchangedShares = Math.min(offer.getShares(), request.getShares());
         offer.setShares(offer.getShares() - exchangedShares);
         request.setShares(request.getShares() - exchangedShares);
+
+        if (offer.getShares() == 0) {
+            offer.setFulfilled(true);
+            stockOfferRepository.save(offer);
+        }
+        if (request.getShares() == 0) {
+            request.setFulfilled(true);
+            stockOfferRepository.save(request);
+        }
     }
 
     private Client findClientByOffer(StockOffer offer) {

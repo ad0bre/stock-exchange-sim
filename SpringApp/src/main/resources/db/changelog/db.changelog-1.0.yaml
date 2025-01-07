@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: your-name
+      changes:
+        - addColumn:
+            tableName: stock_offer
+            columns:
+              - name: fulfilled
+                type: boolean
+                defaultValue: false
