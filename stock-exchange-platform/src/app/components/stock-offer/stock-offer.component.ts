@@ -50,6 +50,7 @@ export class StockOfferComponent {
   createOffer() {
     this.stockOfferService.createStockOffer(this.newOffer).subscribe({
       next: () => {
+        console.log(this.newOffer)
         this.fetchStockOffers();
         this.snackBar.open('Offer created successfully', 'Close', { duration: 3000 });
       },

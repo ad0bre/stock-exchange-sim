@@ -1,6 +1,3 @@
-To add a `mat-form-field` for the "Is Offer" field, you can use a `mat-checkbox` to represent the boolean value. Here is how you can update your form in the `src/app/components/stock-offer/stock-offer.component.html` file:
-
-```html
 <div class="container">
   <div class="stock-offers">
     <mat-card class="stock-offer-card">
@@ -21,20 +18,21 @@ To add a `mat-form-field` for the "Is Offer" field, you can use a `mat-checkbox`
       <form (ngSubmit)="createOffer()" class="offer-form">
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Type</mat-label>
-          <input matInput [(ngModel)]="newOffer.type" name="type" required />
+          <input matInput [(ngModel)]="newOffer.type" name="type" required/>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Shares</mat-label>
-          <input matInput [(ngModel)]="newOffer.shares" type="number" name="shares" required />
+          <input matInput [(ngModel)]="newOffer.shares" type="number" name="shares" required/>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Price Per Unit</mat-label>
-          <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required />
+          <input matInput [(ngModel)]="newOffer.pricePerUnit" type="number" name="pricePerUnit" required/>
         </mat-form-field>
 
-        <mat-checkbox [(ngModel)]="newOffer.isOffer" name="isOffer">Is Offer</mat-checkbox>
+        <mat-label>Is Offer</mat-label>
+        <mat-checkbox [(ngModel)]="newOffer.isOffer" name="offer">Is Offer</mat-checkbox>
 
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit">Create Offer</button>
@@ -47,6 +45,3 @@ To add a `mat-form-field` for the "Is Offer" field, you can use a `mat-checkbox`
 <div class="process-offers-button-container">
   <button mat-stroked-button color="accent" type="button" (click)="processOffers()">Process Offers</button>
 </div>
-```
-
-This will add a checkbox to your form to indicate whether the new offer is active or not.
