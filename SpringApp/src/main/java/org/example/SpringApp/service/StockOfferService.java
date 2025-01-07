@@ -126,7 +126,6 @@ public class StockOfferService {
                                 match(offer, request) && !processedOffers.contains(request.getId())) {
 
                             int sharesExchanged = Math.min(offer.getShares(), request.getShares());
-                            exchangeShares(offer, request);
 
                             if (sharesExchanged > 0) {
                                 Client buyer = findClientByOffer(request);
@@ -134,6 +133,7 @@ public class StockOfferService {
 
                                 Transaction transaction = new Transaction(buyer, seller, offer, sharesExchanged);
                                 if(transactionRepository.findAll().stream().noneMatch(x -> Objects.equals(x.getOffer().getId(), offer.getId()))){
+                                    exchangeShares(offer, request);
                                     transactionRepository.save(transaction);
                                 }
 
