@@ -162,7 +162,7 @@ public class StockOfferService {
 
     private boolean match(StockOffer offer, StockOffer request) {
         return offer.getType().equals(request.getType()) &&
-                Math.abs(offer.getPricePerUnit() - request.getPricePerUnit()) < 1.0;
+                Math.abs(offer.getPricePerUnit() - request.getPricePerUnit()) < 0.1;
     }
 
     private void exchangeShares(StockOffer offer, StockOffer request) {
