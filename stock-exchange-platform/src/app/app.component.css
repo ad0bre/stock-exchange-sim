@@ -1,0 +1,12 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.mat-toolbar {
+  background-color: #9c27b0;
+}

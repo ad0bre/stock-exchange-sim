@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.stock-offers {
+  flex: 3;
+  margin-right: 20px;
+}
+
+.create-offer {
+  flex: 1;
+  max-width: 300px;
+}
+
+.stock-offer-card {
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fafafa;
+  border-left: 5px solid #9c27b0;
+}
+
+.offers-list {
+  margin-bottom: 20px;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.offer-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+input.mat-input-element {
+  padding: 12px 16px;
+}
+
+mat-raised-button {
+  padding: 12px 24px;
+  color: white;
+}
+
+mat-stroked-button {
+  padding: 12px 24px;
+  border-radius: 4px;
+}
+
+.process-offers-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
