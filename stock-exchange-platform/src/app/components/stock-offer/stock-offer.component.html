@@ -5,7 +5,7 @@
       <mat-list class="offers-list">
         <mat-list-item *ngFor="let offer of stockOffers">
           <div>
-            <h4>{{ offer.type }} - {{ offer.shares }} shares &#64; {{ offer.pricePerUnit }}</h4>
+            <h4>{{ offer.type }} - {{ offer.shares }} shares &#64; {{ offer.pricePerUnit }} {{ offer.offer ? 'Offer' : 'Request' }}</h4>
           </div>
         </mat-list-item>
       </mat-list>
