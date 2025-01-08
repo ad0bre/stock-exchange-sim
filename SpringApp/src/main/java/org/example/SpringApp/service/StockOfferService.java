@@ -16,6 +16,7 @@ import jakarta.annotation.PostConstruct;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -110,40 +111,50 @@ public class StockOfferService {
 
     public void processOffersAndRequests() {
         lock.lock();
+        initStockOffers();
         try {
-            List<StockOffer> matchedOffers = new ArrayList<>();
-            List<StockOffer> matchedRequests = new ArrayList<>();
+            List<Long> processedOffers = new ArrayList<>();
 
-            for (StockOffer offer : stockOffers) {
-                if (offer.isOffer() && offer.getShares() > 0) {
-                    for (StockOffer request : stockOffers) {
-                        if (!request.isOffer() && request.getShares() > 0 && offer != request && match(offer, request)) {
-                            int sharesBeforeExchange = offer.getShares() + request.getShares();
-                            exchangeShares(offer, request);
-                            int sharesExchanged = sharesBeforeExchange - (offer.getShares() + request.getShares());
+            List<StockOffer> activeOffers = stockOffers.stream()
+                    .filter(offer -> !offer.isFulfilled())
+                    .toList();
+
+            for (StockOffer offer : activeOffers) {
+                if (offer.isOffer() && offer.getShares() > 0 && !processedOffers.contains(offer.getId())) {
+                    for (StockOffer request : activeOffers) {
+                        if (!request.isOffer() && request.getShares() > 0 && offer != request &&
+                                match(offer, request) && !processedOffers.contains(request.getId())) {
+
+                            int sharesExchanged = Math.min(offer.getShares(), request.getShares());
 
                             if (sharesExchanged > 0) {
                                 Client buyer = findClientByOffer(request);
                                 Client seller = findClientByOffer(offer);
 
                                 Transaction transaction = new Transaction(buyer, seller, offer, sharesExchanged);
-                                transactionRepository.save(transaction);
-
-                                matchedOffers.add(offer);
-                                matchedRequests.add(request);
+                                if(transactionRepository.findAll().stream().noneMatch(x -> Objects.equals(x.getOffer().getId(), offer.getId()))){
+                                    exchangeShares(offer, request);
+                                    transactionRepository.save(transaction);
+                                }
 
                                 System.out.println("Transaction executed: Buyer " + buyer.getName() +
                                         " bought " + sharesExchanged +
                                         " shares of " + offer.getType() +
                                         " from Seller " + seller.getName());
+
+                                if (offer.isFulfilled()) {
+                                    processedOffers.add(offer.getId());
+                                }
+                                if (request.isFulfilled()) {
+                                    processedOffers.add(request.getId());
+                                }
                             }
                         }
                     }
                 }
             }
 
-            stockOffers.removeAll(matchedOffers);
-            stockOffers.removeAll(matchedRequests);
+            stockOffers.removeIf(offer -> offer.isFulfilled());
         } finally {
             lock.unlock();
         }
@@ -151,13 +162,23 @@ public class StockOfferService {
 
     private boolean match(StockOffer offer, StockOffer request) {
         return offer.getType().equals(request.getType()) &&
-                Math.abs(offer.getPricePerUnit() - request.getPricePerUnit()) < 1.0;
+                Math.abs(offer.getPricePerUnit() - request.getPricePerUnit()) < 0.1;
     }
 
     private void exchangeShares(StockOffer offer, StockOffer request) {
         int exchangedShares = Math.min(offer.getShares(), request.getShares());
         offer.setShares(offer.getShares() - exchangedShares);
         request.setShares(request.getShares() - exchangedShares);
+
+        if (offer.getShares() == 0) {
+            offer.setFulfilled(true);
+        }
+        if (request.getShares() == 0) {
+            request.setFulfilled(true);
+        }
+
+        stockOfferRepository.save(offer);
+        stockOfferRepository.save(request);
     }
 
     private Client findClientByOffer(StockOffer offer) {

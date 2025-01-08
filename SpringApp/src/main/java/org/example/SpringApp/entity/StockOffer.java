@@ -19,6 +19,7 @@ public class StockOffer {
     private int shares;
     private double pricePerUnit;
     private boolean isOffer;
+    private boolean fulfilled;
 
     public StockOffer() {
     }
@@ -28,5 +29,6 @@ public class StockOffer {
         this.shares = shares;
         this.pricePerUnit = pricePerUnit;
         this.isOffer = isOffer;
+        this.fulfilled = false;
     }
 }
