@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=pcbe
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=pcbe
+
+  app:
+    build: .
+    container_name: java-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pcbe
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: pcbe
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+
+#  angular-app:
+#    build:
+#      context: ../stock-exchange-platform
+#      dockerfile: Dockerfile
+#    container_name: angular-app
+#    ports:
+#      - '4200:4200'
+#    depends_on:
+#      - app
+#    volumes:
+#      - ./:/angular-app
+#    environment:
+#      - STYLE=css
